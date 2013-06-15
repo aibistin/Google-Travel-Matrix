@@ -350,24 +350,6 @@ has 'units' => (
     coerce  => 1,
 );
 
-=head2 origins
-       An address string,  or string of addresses. Each address element must
-       be delimited by a comma. If more than one address, then seperate each
-       address with a '|'. 
-       An address HashRef of this format 
-       {
-        address_1 => $address_1,
-        address_2 => $address_2,
-        city => $city,
-        state => $state, 
-        country => $country,
-        zip => $zip, 
-        }
-        ,  will be coerced to a valid address string. 
-
-       An arrayref of address strings and or address HashRefs  will be coerced into a compatible address(s)
-       string(s).
-=cut
 
 has 'origins' => (
     is  => 'rw',
@@ -379,10 +361,6 @@ has 'origins' => (
 
 #------ Array or destination addresses
 
-=head2 destinations
-    The destination addresses. Follows the same formatting rules as 'origins'
-
-=cut
 
 has 'destinations' => (
     is  => 'rw',
@@ -443,13 +421,6 @@ sub build_the_request {
 #  Stuff to put into a sub class
 #-------------------------------------------------------------------------------
 
-=head2 process_results
- See what we need from the results.
- Note::
-      Each Row corresponds to an origin.
-      Each element within a row corresponds to a paring of the origin 
-      with a destination value.
-=cut
 
 sub process_results {
     my $self   = shift;
@@ -470,10 +441,6 @@ sub process_results {
 #      $REQ_DENIED              => 'REQUEST_DENIED';
 #      $UNKNOWN_ERROR           => 'UNKNOWN_ERROR';
 
-=head2 get_all_elements
- Get the distances.
- Create a hash with the address,  
-=cut
 
 sub get_all_elements {
     my $self = shift;
@@ -521,9 +488,6 @@ sub get_all_elements {
 #    Helper Methods
 #-------------------------------------------------------------------------------
 
-=head3 _get_formatted_origins
-    Returns the origins address array, formatted for the Google API
-=cut
 
 sub _get_formatted_addresses {
     my $self                   = shift;
@@ -536,21 +500,12 @@ sub _get_formatted_origins {
     return join( '|', @{ $self->origins } );
 }
 
-=head3 _get_formatted_destinations
-    Reurns the destinations address array, formatted for the Google API
-=cut
 
 sub _get_formatted_destinations {
     my $self = shift;
     return join( '|', @{ $self->destinations } );
 }
 
-=head3 _matrix_query_params
-    Build and returns all the params for the Google Travel Matrix request
-    as a HashRef.
-    Use the formatted origins and destinations address's.
-    Omits the requested output format specifier.
-=cut
 
 sub _matrix_query_params {
     my $self = shift;
@@ -569,9 +524,6 @@ sub _matrix_query_params {
     return \%query;
 }
 
-=head2 _build_uri
-   Build and return the query URI.
-=cut
 
 sub _build_uri {
     my $self          = shift;
@@ -587,10 +539,6 @@ sub _build_uri {
     return $uri;
 }
 
-=head2 _call_google_api
-   Call the google travel matrix API.
-   Returns the Google response
-=cut
 
 sub _call_google_api {
     my $self = shift;
@@ -616,9 +564,6 @@ sub _call_google_api {
     return $response;
 }
 
-=head2 _convert_from_json
-   Convert the Google response from JSON.
-=cut
 
 sub _convert_from_json {
     my $self     = shift;
@@ -633,9 +578,6 @@ sub _convert_from_json {
     return $object;
 }
 
-=head2 _convert_from_xml
-   Convert the Google response from XML to a Perl Data Structure;
-=cut
 
 sub _convert_from_xml {
     my $self     = shift;
@@ -723,9 +665,77 @@ $str_full_trim = sub {
 no Moose;
 __PACKAGE__->meta->make_immutable;
 1;
+
 __END__
 
-=head2
+=pod
+
+=head1 NAME
+
+Google::Travel::Matrix - To access the Google Travel Matrix API .
+
+=head1 VERSION
+
+version 0.1
+
+=head2 origins
+       An address string,  or string of addresses. Each address element must
+       be delimited by a comma. If more than one address, then seperate each
+       address with a '|'. 
+       An address HashRef of this format 
+       {
+        address_1 => $address_1,
+        address_2 => $address_2,
+        city => $city,
+        state => $state, 
+        country => $country,
+        zip => $zip, 
+        }
+        ,  will be coerced to a valid address string. 
+
+       An arrayref of address strings and or address HashRefs  will be coerced into a compatible address(s)
+       string(s).
+
+=head2 destinations
+    The destination addresses. Follows the same formatting rules as 'origins'
+
+=head2 process_results
+ See what we need from the results.
+ Note::
+      Each Row corresponds to an origin.
+      Each element within a row corresponds to a paring of the origin 
+      with a destination value.
+
+=head2 get_all_elements
+ Get the distances.
+ Create a hash with the address,  
+
+=head3 _get_formatted_origins
+    Returns the origins address array, formatted for the Google API
+
+=head3 _get_formatted_destinations
+    Reurns the destinations address array, formatted for the Google API
+
+=head3 _matrix_query_params
+    Build and returns all the params for the Google Travel Matrix request
+    as a HashRef.
+    Use the formatted origins and destinations address's.
+    Omits the requested output format specifier.
+
+=head2 _build_uri
+   Build and return the query URI.
+
+=head2 _call_google_api
+   Call the google travel matrix API.
+   Returns the Google response
+
+=head2 _convert_from_json
+   Convert the Google response from JSON.
+
+=head2 _convert_from_xml
+   Convert the Google response from XML to a Perl Data Structure;
+
+=head2 
     Readonly => %valid_google_languages (
         ar => ARABIC,
         eu => BASQUE,
@@ -785,4 +795,16 @@ __END__
         zh-CN => CHINESE(SIMPLIFIED),
         zh-TW => CHINESE(TRADITIONAL),
     );
+
+=head1 AUTHOR
+
+Austin Kenny <aibistin.cionnaith@gmail.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2013 by Austin Kenny.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
 =cut
