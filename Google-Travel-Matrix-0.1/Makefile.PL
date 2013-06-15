@@ -33,10 +33,10 @@ my %WriteMakefileArgs = (
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => "6.30"
   },
-  "DISTNAME" => "Mover-Travel-Matrix",
+  "DISTNAME" => "Google-Travel-Matrix",
   "EXE_FILES" => [],
   "LICENSE" => "perl",
-  "NAME" => "Mover::Travel::Matrix",
+  "NAME" => "Google::Travel::Matrix",
   "PREREQ_PM" => {
     "Data::Dump" => 0,
     "JSON" => 0,
