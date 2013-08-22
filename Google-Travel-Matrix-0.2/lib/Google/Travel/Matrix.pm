@@ -351,24 +351,6 @@ has 'units' => (
     coerce  => 1,
 );
 
-=head2 origins
-       An address string,  or string of addresses. Each address element must
-       be delimited by a comma. If more than one address, then seperate each
-       address with a '|'. 
-       An address HashRef of this format 
-       {
-        address_1 => $address_1,
-        address_2 => $address_2,
-        city => $city,
-        state => $state, 
-        country => $country,
-        zip => $zip, 
-        }
-        ,  will be coerced to a valid address string. 
-
-       An arrayref of address strings and or address HashRefs  will be coerced into a compatible address(s)
-       string(s).
-=cut
 
 has 'origins' => (
     is     => 'rw',
@@ -378,10 +360,6 @@ has 'origins' => (
 
 #------ Array or destination addresses
 
-=head2 destinations
-    The destination addresses. Follows the same formatting rules as 'origins'
-
-=cut
 
 has 'destinations' => (
     is     => 'rw',
@@ -411,11 +389,6 @@ before qw/
       unless ( $_[1] && ref( $_[1] ) );
   };
 
-=head2 get_raw_google_matrix_data
-    Builds the request and gets the Google Distance Matrix data based on the 
-    Origin and Destination addresses.
-    Returns the raw Google Matrix response in either JSON or XML format.
-=cut
 
 sub get_raw_google_matrix_data {
     my $self         = shift;
@@ -428,12 +401,6 @@ sub get_raw_google_matrix_data {
 #  Stuff to put into a sub class
 #-------------------------------------------------------------------------------
 
-=head2 get_google_matrix_data_as_scalar_ref
-    Builds the request and gets the Google Distance Matrix data based on the 
-    Origin and Destination addresses.
-    Returns the Google Matrix response as a scalar reference to a Perl data structure.
-    Note: The output attribute will be set to the default, "JSON". 
-=cut
 
 sub get_google_matrix_data_as_scalar_ref {
     my $self = shift;
@@ -442,14 +409,6 @@ sub get_google_matrix_data_as_scalar_ref {
         $self->get_raw_google_matrix_data() );
 }
 
-=head2 get_all_elements
- Given the Google Distance Matrix output as a scalar reference to a Perl data
- structure, returns an ArrayRef of Matrix elements or undef.
- If no Google Output data passed, then it will create one using the Origin and
- destination addresses;
- It would be a good idea to check that the Google Matrix Return is 'OK' before calling
- this method.
-=cut
 
 sub get_all_elements {
     my $self = shift;
@@ -516,9 +475,6 @@ sub get_all_elements {
     return \@elements_array;
 }
 
-=head2 convert_google_json_to_perl
-   Convert the Google response from JSON to a Perl data reference.
-=cut
 
 sub convert_google_json_to_perl {
     my $self     = shift;
@@ -527,29 +483,12 @@ sub convert_google_json_to_perl {
       if ( $response && $self->output eq $JSON );
 }
 
-=head2 get_matrix_status_message
-  Given the decoded Google response, return a string wich contains the google
-  status message as a string.
-
-  These are the status messages from Google.
-  'OK',
-  'INVALID_REQUEST',
-  'MAX_ELEMENTS_EXCEEDED',
-  'MAX_DIMENSIONS_EXCEEDED',
-  'MAX_QUERY_LIMIT',
-  'REQUEST_DENIED',
-  'UNKNOWN_ERROR',
-=cut
 
 sub get_matrix_status_message {
     my $self = shift;
     return $_[0]->{status};
 }
 
-=head2 get_matrix_origin_addresses
- Get the origin address(s) returned by Google.
- Returns an ArayRef;
-=cut
 
 sub get_matrix_origin_addresses {
     my $self   = shift;
@@ -557,10 +496,6 @@ sub get_matrix_origin_addresses {
     return $matrix->{origin_addresses} || [];
 }
 
-=head2 get_matrix_destination_addresses
- Get the destination address(s) returned by Google.
- Returns an ArayRef;
-=cut
 
 sub get_matrix_destination_addresses {
     my $self   = shift;
@@ -572,9 +507,6 @@ sub get_matrix_destination_addresses {
 #    Helper Methods
 #-------------------------------------------------------------------------------
 
-=head2 _get_array_of_origins
-    Returns the string of the original input origins as an arrayRef of individual addresses.
-=cut
 
 sub _get_array_of_origins {
     my $self = shift;
@@ -582,9 +514,6 @@ sub _get_array_of_origins {
     return \@original_origins;
 }
 
-=head2 _get_array_of_destinations
-    Returns the string of the original input destinations as an arrayRef of individual addresses.
-=cut
 
 sub _get_array_of_destinations {
     my $self = shift;
@@ -592,12 +521,6 @@ sub _get_array_of_destinations {
     return \@original_destinations;
 }
 
-=head2 _matrix_query_params
-    Build and returns all the params for the Google Distance Matrix request
-    as a HashRef.
-    Use the formatted origins and destinations address's.
-    Omits the requested output format specifier.
-=cut
 
 sub _matrix_query_params {
     my $self = shift;
@@ -609,9 +532,6 @@ sub _matrix_query_params {
     return \%query;
 }
 
-=head2 _build_uri
-   Build and return the query URI.
-=cut
 
 sub _build_uri {
     my $self          = shift;
@@ -627,10 +547,6 @@ sub _build_uri {
     return $uri;
 }
 
-=head2 _call_google_api
-   Call the google travel matrix API.
-   Returns the Google response.
-=cut
 
 sub _call_google_api {
     my $self = shift;
@@ -650,9 +566,6 @@ sub _call_google_api {
     return $response;
 }
 
-=head2 _convert_from_json
-   Convert the Google response from JSON.
-=cut
 
 sub _convert_from_json {
     my $self     = shift;
@@ -736,9 +649,106 @@ $str_full_trim = sub {
 no Moose;
 __PACKAGE__->meta->make_immutable;
 1;
+
 __END__
 
-=head2
+=pod
+
+=head1 NAME
+
+Google::Travel::Matrix - To access the Google Distance Matrix API .
+
+=head1 VERSION
+
+version 0.2
+
+=head2 origins
+       An address string,  or string of addresses. Each address element must
+       be delimited by a comma. If more than one address, then seperate each
+       address with a '|'. 
+       An address HashRef of this format 
+       {
+        address_1 => $address_1,
+        address_2 => $address_2,
+        city => $city,
+        state => $state, 
+        country => $country,
+        zip => $zip, 
+        }
+        ,  will be coerced to a valid address string. 
+
+       An arrayref of address strings and or address HashRefs  will be coerced into a compatible address(s)
+       string(s).
+
+=head2 destinations
+    The destination addresses. Follows the same formatting rules as 'origins'
+
+=head2 get_raw_google_matrix_data
+    Builds the request and gets the Google Distance Matrix data based on the 
+    Origin and Destination addresses.
+    Returns the raw Google Matrix response in either JSON or XML format.
+
+=head2 get_google_matrix_data_as_scalar_ref
+    Builds the request and gets the Google Distance Matrix data based on the 
+    Origin and Destination addresses.
+    Returns the Google Matrix response as a scalar reference to a Perl data structure.
+    Note: The output attribute will be set to the default, "JSON". 
+
+=head2 get_all_elements
+ Given the Google Distance Matrix output as a scalar reference to a Perl data
+ structure, returns an ArrayRef of Matrix elements or undef.
+ If no Google Output data passed, then it will create one using the Origin and
+ destination addresses;
+ It would be a good idea to check that the Google Matrix Return is 'OK' before calling
+ this method.
+
+=head2 convert_google_json_to_perl
+   Convert the Google response from JSON to a Perl data reference.
+
+=head2 get_matrix_status_message
+  Given the decoded Google response, return a string wich contains the google
+  status message as a string.
+
+  These are the status messages from Google.
+  'OK',
+  'INVALID_REQUEST',
+  'MAX_ELEMENTS_EXCEEDED',
+  'MAX_DIMENSIONS_EXCEEDED',
+  'MAX_QUERY_LIMIT',
+  'REQUEST_DENIED',
+  'UNKNOWN_ERROR',
+
+=head2 get_matrix_origin_addresses
+ Get the origin address(s) returned by Google.
+ Returns an ArayRef;
+
+=head2 get_matrix_destination_addresses
+ Get the destination address(s) returned by Google.
+ Returns an ArayRef;
+
+=head2 _get_array_of_origins
+    Returns the string of the original input origins as an arrayRef of individual addresses.
+
+=head2 _get_array_of_destinations
+    Returns the string of the original input destinations as an arrayRef of individual addresses.
+
+=head2 _matrix_query_params
+    Build and returns all the params for the Google Distance Matrix request
+    as a HashRef.
+    Use the formatted origins and destinations address's.
+    Omits the requested output format specifier.
+
+=head2 _build_uri
+   Build and return the query URI.
+
+=head2 _call_google_api
+   Call the google travel matrix API.
+   Returns the Google response.
+
+=head2 _convert_from_json
+   Convert the Google response from JSON.
+
+=head2 
     Readonly => %valid_google_languages (
         ar => ARABIC,
         eu => BASQUE,
@@ -798,4 +808,16 @@ __END__
         zh-CN => CHINESE(SIMPLIFIED),
         zh-TW => CHINESE(TRADITIONAL),
     );
+
+=head1 AUTHOR
+
+Austin Kenny <aibistin.cionnaith@gmail.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2013 by Austin Kenny.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
 =cut

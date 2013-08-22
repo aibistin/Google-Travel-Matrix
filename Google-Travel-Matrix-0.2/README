@@ -1,14 +1,10 @@
-=pod
+NAME
+    Google::Travel::Matrix - To access the Google Distance Matrix API .
 
-=head1 NAME
+VERSION
+    version 0.2
 
-Google::Travel::Matrix - To access the Google Distance Matrix API .
-
-=head1 VERSION
-
-version 0.2
-
-=head2 origins
+  origins
        An address string,  or string of addresses. Each address element must
        be delimited by a comma. If more than one address, then seperate each
        address with a '|'. 
@@ -21,80 +17,65 @@ version 0.2
         country => $country,
         zip => $zip, 
         }
-        ,  will be coerced to a valid address string. 
+        ,  will be coerced to a valid address string.
+           An arrayref of address strings and or address HashRefs  will be coerced into a compatible address(s)
+           string(s).
 
-       An arrayref of address strings and or address HashRefs  will be coerced into a compatible address(s)
-       string(s).
-
-=head2 destinations
+  destinations
     The destination addresses. Follows the same formatting rules as 'origins'
-
-=head2 get_raw_google_matrix_data
+  get_raw_google_matrix_data
     Builds the request and gets the Google Distance Matrix data based on the 
     Origin and Destination addresses.
     Returns the raw Google Matrix response in either JSON or XML format.
-
-=head2 get_google_matrix_data_as_scalar_ref
+  get_google_matrix_data_as_scalar_ref
     Builds the request and gets the Google Distance Matrix data based on the 
     Origin and Destination addresses.
     Returns the Google Matrix response as a scalar reference to a Perl data structure.
-    Note: The output attribute will be set to the default, "JSON". 
-
-=head2 get_all_elements
+    Note: The output attribute will be set to the default, "JSON".
+  get_all_elements
  Given the Google Distance Matrix output as a scalar reference to a Perl data
  structure, returns an ArrayRef of Matrix elements or undef.
  If no Google Output data passed, then it will create one using the Origin and
  destination addresses;
  It would be a good idea to check that the Google Matrix Return is 'OK' before calling
  this method.
-
-=head2 convert_google_json_to_perl
+  convert_google_json_to_perl
    Convert the Google response from JSON to a Perl data reference.
-
-=head2 get_matrix_status_message
+  get_matrix_status_message
   Given the decoded Google response, return a string wich contains the google
   status message as a string.
+      These are the status messages from Google.
+      'OK',
+      'INVALID_REQUEST',
+      'MAX_ELEMENTS_EXCEEDED',
+      'MAX_DIMENSIONS_EXCEEDED',
+      'MAX_QUERY_LIMIT',
+      'REQUEST_DENIED',
+      'UNKNOWN_ERROR',
 
-  These are the status messages from Google.
-  'OK',
-  'INVALID_REQUEST',
-  'MAX_ELEMENTS_EXCEEDED',
-  'MAX_DIMENSIONS_EXCEEDED',
-  'MAX_QUERY_LIMIT',
-  'REQUEST_DENIED',
-  'UNKNOWN_ERROR',
-
-=head2 get_matrix_origin_addresses
+  get_matrix_origin_addresses
  Get the origin address(s) returned by Google.
  Returns an ArayRef;
-
-=head2 get_matrix_destination_addresses
+  get_matrix_destination_addresses
  Get the destination address(s) returned by Google.
  Returns an ArayRef;
-
-=head2 _get_array_of_origins
+  _get_array_of_origins
     Returns the string of the original input origins as an arrayRef of individual addresses.
-
-=head2 _get_array_of_destinations
+  _get_array_of_destinations
     Returns the string of the original input destinations as an arrayRef of individual addresses.
-
-=head2 _matrix_query_params
+  _matrix_query_params
     Build and returns all the params for the Google Distance Matrix request
     as a HashRef.
     Use the formatted origins and destinations address's.
     Omits the requested output format specifier.
-
-=head2 _build_uri
+  _build_uri
    Build and return the query URI.
-
-=head2 _call_google_api
+  _call_google_api
    Call the google travel matrix API.
    Returns the Google response.
-
-=head2 _convert_from_json
+  _convert_from_json
    Convert the Google response from JSON.
-
-=head2 
+  
     Readonly => %valid_google_languages (
         ar => ARABIC,
         eu => BASQUE,
@@ -154,15 +135,12 @@ version 0.2
         zh-CN => CHINESE(SIMPLIFIED),
         zh-TW => CHINESE(TRADITIONAL),
     );
+AUTHOR
+    Austin Kenny <aibistin.cionnaith@gmail.com>
 
-=head1 AUTHOR
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2013 by Austin Kenny.
 
-Austin Kenny <aibistin.cionnaith@gmail.com>
-
-=head1 COPYRIGHT AND LICENSE
-
-This software is copyright (c) 2013 by Austin Kenny.
-
-This is free software; you can redistribute it and/or modify it under
-the same terms as the Perl 5 programming language system itself.
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
 

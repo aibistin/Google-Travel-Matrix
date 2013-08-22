@@ -1,0 +1,64 @@
+{
+   "abstract" : "To access the Google Distance Matrix API .",
+   "author" : [
+      "Austin Kenny <aibistin.cionnaith@gmail.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.132140",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Google-Travel-Matrix",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.30"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Data::Dump" : "0",
+            "JSON" : "0",
+            "LWP::UserAgent" : "0",
+            "Log::Any" : "0",
+            "Moose" : "0",
+            "Moose::Util::TypeConstraints" : "0",
+            "MooseX::UndefTolerant::Attribute" : "0",
+            "Readonly" : "0",
+            "Try::Tiny" : "0",
+            "URI" : "0",
+            "namespace::autoclean" : "0",
+            "utf8::all" : "0"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Capture::Tiny" : "0",
+            "Carp" : "0",
+            "DateTime" : "0",
+            "ExtUtils::MakeMaker" : "0",
+            "File::Spec::Functions" : "0",
+            "File::Temp" : "0",
+            "List::MoreUtils" : "0",
+            "List::Util" : "0",
+            "Log::Any::Adapter" : "0",
+            "Log::Log4perl" : "0",
+            "Modern::Perl" : "0",
+            "Scalar::Util" : "0",
+            "Test::Exception" : "0",
+            "Test::Moose::More" : "0",
+            "Test::More" : "0.88",
+            "blib" : "0",
+            "strict" : "0",
+            "warnings" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "version" : "0.2"
+}
+
